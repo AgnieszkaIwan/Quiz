@@ -1,16 +1,18 @@
 <template>
-  <div>
+  <div class="p-6 bg-white shadow-md rounded-lg">
     <div v-if="!quizCompleted && currentQuestion">
       <Question 
         :question="currentQuestion"
         :questionIndex="currentQuestionIndex"
         :totalQuestions="questions.length"
       />
-      <button @click="prevQuestion" :disabled="currentQuestionIndex === 0">Poprzednie</button>
-      <button @click="nextQuestion">{{ isLastQuestion ? 'Zakończ' : 'Następne' }}</button>
+      <div class="flex justify-between mt-4">
+     <button @click="prevQuestion" :disabled="currentQuestionIndex === 0" class="bg-gray-300 text-gray-700 px-4 py-2 rounded disabled:opacity-50">Previous</button>
+      <button @click="nextQuestion" class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition duration-300">{{ isLastQuestion ? 'Finish' : 'Next' }}</button>
     </div>
-    <div v-else>
-      <router-link to="/summary">Zobacz podsumowanie</router-link>
+    </div>
+    <div v-else class="text-center">
+      <router-link to="/summary" class="text-blue-500 hover:underline">View Summary</router-link>
     </div>
   </div>
 </template>
@@ -18,7 +20,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useQuizStore } from '@/store/quiz';
-import Question from '../components/Question/Question.vue';
+import Question from '../components/Question/QuizQuestion.vue';
 
 const store = useQuizStore();
 const currentQuestionIndex = ref(0);

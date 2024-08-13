@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <h2>Quiz Summary</h2>
+  <div class="p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-4 ">Quiz Summary</h2>
     <SummaryChart :correct="correctAnswers" :incorrect="incorrectAnswers" />
-    <p>Correct Answers: {{ correctAnswers }}</p>
-    <p>Incorrect Answers: {{ incorrectAnswers }}</p>
+    <p class="text-lg text-gray-600 mt-4">Correct Answers: <span class="font-semibold">{{ correctAnswers }}</span></p>
+    <p class="text-lg text-gray-600">Incorrect Answers: <span class="font-semibold">{{ incorrectAnswers }}</span></p>
   </div>
 </template>
 

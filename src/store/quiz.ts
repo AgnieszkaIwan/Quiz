@@ -22,7 +22,7 @@ export const useQuizStore = defineStore('quiz', {
   }),
   actions: {
     async fetchQuestions() {
-      if (this.loading) return; // Zapobieganie wielokrotnemu wywołaniu
+      if (this.loading) return;
       this.loading = true;
           try {
               const response = await fetch('https://opentdb.com/api.php?amount=10');
