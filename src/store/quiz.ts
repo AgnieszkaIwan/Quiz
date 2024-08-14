@@ -9,8 +9,8 @@ interface Question {
 interface QuizState {
   questions: Question[];
   answers: Record<number, string>;
-    completed: boolean;
-    loading: boolean;
+  completed: boolean;
+  loading: boolean;
 }
 
 export const useQuizStore = defineStore('quiz', {
@@ -24,27 +24,33 @@ export const useQuizStore = defineStore('quiz', {
     async fetchQuestions() {
       if (this.loading) return;
       this.loading = true;
-          try {
-              const response = await fetch('https://opentdb.com/api.php?amount=10');
-              const data = await response.json();
-              this.questions = data.results;
-          } catch (error) {
-              console.error('Error fetching trivia questions:', error);
-          } finally {
-              this.loading = false;
-          }
+      try {
+        const response = await fetch('https://opentdb.com/api.php?amount=10');
+        const data = await response.json();
+        this.questions = data.results.map((question: any) => ({
+          question: question.question,
+          correct_answer: question.correct_answer,
+          incorrect_answers: question.incorrect_answers,
+        }));
+      } catch (error) {
+        console.error('Error fetching trivia questions:', error);
+      } finally {
+        this.loading = false;
+      }
     },
     setAnswer(questionIndex: number, answer: string) {
       this.answers[questionIndex] = answer;
     },
     finishQuiz() {
       this.completed = true;
-    }
+    },
   },
   getters: {
     correctAnswersCount: (state) => {
-      return state.questions.filter((q, index) => state.answers[index] === q.correct_answer).length;
+      return state.questions.reduce((count, question, index) => {
+        return count + (state.answers[index] === question.correct_answer ? 1 : 0);
+      }, 0);
     },
     totalQuestions: (state) => state.questions.length,
-  }
+  },
 });

@@ -2,7 +2,7 @@
   <div class="p-6 bg-white shadow-md rounded-lg">
     <div v-if="!quizCompleted && currentQuestion">
       <Question 
-        :question="currentQuestion"
+        :question="decodedCurrentQuestion"
         :questionIndex="currentQuestionIndex"
         :totalQuestions="questions.length"
         @answerSelected="handleAnswerSelected"
@@ -20,40 +20,48 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useQuizStore } from '@/store/quiz';
-import Question from '../components/Question/QuizQuestion.vue';
+import { useQuizStore } from '@/store/quiz'; // Ensure the correct path to your store
+import Question from '@/components/Question/QuizQuestion.vue'; // Ensure the correct path to your Question component
+import { decodeHtmlEntities } from '../utils'; // Ensure the correct path to your utility file
 
 const store = useQuizStore();
 const currentQuestionIndex = ref(0);
-const quizCompleted = ref(false);
-const selectedAnswer = ref<string | null>(null); // Initialize selectedAnswer
+const quizCompleted = computed(() => store.completed); // Use the store's completed state
+const questions = computed(() => store.questions);
+const currentQuestion = computed(() => questions.value[currentQuestionIndex.value]);
+
+// Decode the current question text and answers
+const decodedCurrentQuestion = computed(() => {
+  if (!currentQuestion.value) return null;
+  return {
+    ...currentQuestion.value,
+    question: decodeHtmlEntities(currentQuestion.value.question),
+    correct_answer: decodeHtmlEntities(currentQuestion.value.correct_answer),
+    incorrect_answers: currentQuestion.value.incorrect_answers.map(decodeHtmlEntities),
+  };
+});
+
+const isLastQuestion = computed(() => currentQuestionIndex.value === questions.value.length - 1);
 
 onMounted(async () => {
   await store.fetchQuestions();
 });
 
-const questions = computed(() => store.questions);
-const currentQuestion = computed(() => questions.value[currentQuestionIndex.value]);
-const isLastQuestion = computed(() => currentQuestionIndex.value === questions.value.length - 1);
-
 const nextQuestion = () => {
   if (isLastQuestion.value) {
-    quizCompleted.value = true;
     store.finishQuiz();
   } else {
     currentQuestionIndex.value++;
-    selectedAnswer.value = null; 
   }
 };
 
 const prevQuestion = () => {
   if (currentQuestionIndex.value > 0) {
     currentQuestionIndex.value--;
-    selectedAnswer.value = null; 
   }
 };
 
 const handleAnswerSelected = (payload: { questionIndex: number; answer: string }) => {
-  selectedAnswer.value = payload.answer;
+  store.setAnswer(payload.questionIndex, payload.answer);
 };
 </script>
