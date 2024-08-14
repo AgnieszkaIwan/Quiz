@@ -18,7 +18,7 @@ import {
 } from 'chart.js';
 import type { ChartOptions, ChartData } from 'chart.js';
 
-// Registration of components Chart.js
+
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const props = defineProps<{

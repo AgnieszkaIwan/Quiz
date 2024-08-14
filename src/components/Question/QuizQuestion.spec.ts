@@ -1,4 +1,3 @@
-// Question.spec.ts
 import { mount } from '@vue/test-utils';
 import Question from './QuizQuestion.vue';
 
@@ -40,7 +39,6 @@ describe('QuizQuestion.vue', () => {
       },
     });
 
-    // Find the radio button corresponding to the correct answer
     const correctAnswerIndex = wrapper.findAll('input[type="radio"]').findIndex(input => input.element.value === 'Paris');
     await wrapper.findAll('input[type="radio"]')[correctAnswerIndex].setValue();
 

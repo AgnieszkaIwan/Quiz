@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, defineProps, defineEmits } from 'vue';
-import { decodeHtmlEntities } from '../../utils'; // Adjust the path as necessary
+import { decodeHtmlEntities } from '../../utils'; 
 
 interface Question {
   question: string;
@@ -24,36 +24,35 @@ interface Question {
   incorrect_answers: string[];
 }
 
-// Props for the question component
+
 const props = defineProps<{
   question: Question;
   questionIndex: number;
   totalQuestions: number;
 }>();
 
-// Emits event when an answer is selected
+
 const emit = defineEmits(['answerSelected']);
 
-// State for the selected answer
+
 const selectedAnswer = ref('');
 
-// Shuffle the answers (both correct and incorrect)
+
 const shuffledAnswers = computed(() => {
   if (!props.question) return [];
   return [...props.question.incorrect_answers, props.question.correct_answer].sort(() => Math.random() - 0.5);
 });
 
-// Decode any HTML entities in the question text
+
 const decodedQuestion = computed(() => props.question ? decodeHtmlEntities(props.question.question) : '');
 
-// Watch for changes in the selected answer and emit an event when it changes
+
 watch(selectedAnswer, (newAnswer) => {
   emit('answerSelected', { questionIndex: props.questionIndex, answer: newAnswer });
 });
 
-// Watch for changes in the question prop and reset selectedAnswer
 watch(() => props.question, () => {
-  selectedAnswer.value = ''; // Reset the selected answer when the question changes
+  selectedAnswer.value = ''; 
 }, { immediate: true });
 
 </script>

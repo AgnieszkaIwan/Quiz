@@ -15,6 +15,6 @@
 
 <style scoped>
 body {
-  background-color: #f5f5f5; /* Light gray background */
+  background-color: #f5f5f5; 
 }
 </style>
