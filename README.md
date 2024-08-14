@@ -15,7 +15,7 @@
 
 - **Vue.js**: JavaScript framework used for building the user interface.
 - **Vue Router**: Used for managing navigation between different views in the application.
-- **Vuex**: Manages the application state.
+- **Pinia**: Manages the application state.
 - **Chart.js**: Library used for creating charts that visualize quiz results.
 - **Tailwind CSS**: CSS framework used for styling the application.
 
