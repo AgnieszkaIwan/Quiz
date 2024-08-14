@@ -2,6 +2,7 @@
   <div class="p-6 bg-white shadow-md rounded-lg">
     <div v-if="!quizCompleted && currentQuestion">
       <Question 
+        v-if="decodedCurrentQuestion"
         :question="decodedCurrentQuestion"
         :questionIndex="currentQuestionIndex"
         :totalQuestions="questions.length"
@@ -20,17 +21,17 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useQuizStore } from '@/store/quiz'; // Ensure the correct path to your store
-import Question from '@/components/Question/QuizQuestion.vue'; // Ensure the correct path to your Question component
-import { decodeHtmlEntities } from '../utils'; // Ensure the correct path to your utility file
+import { useQuizStore } from '@/store/quiz'; 
+import Question from '@/components/Question/QuizQuestion.vue'; 
+import { decodeHtmlEntities } from '../utils'; 
 
 const store = useQuizStore();
 const currentQuestionIndex = ref(0);
-const quizCompleted = computed(() => store.completed); // Use the store's completed state
+const quizCompleted = computed(() => store.completed); 
 const questions = computed(() => store.questions);
 const currentQuestion = computed(() => questions.value[currentQuestionIndex.value]);
 
-// Decode the current question text and answers
+
 const decodedCurrentQuestion = computed(() => {
   if (!currentQuestion.value) return null;
   return {
