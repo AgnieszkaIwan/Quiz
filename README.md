@@ -39,8 +39,6 @@ To run the application locally, follow these steps:
    ```bash
    npm run serve
 
-
-
 ## Testing
 
 The application includes a set of unit and integration tests that can be run using Vitest:
