@@ -29,17 +29,19 @@ To run the application locally, follow these steps:
 
 2. Navigate to the project directory:
   ```bash
-cd Quiz
+    cd Quiz
 
 3. Install dependencies:
   ```bash
-npm install
+    npm install
 
 4. Start the application:
   ```bash
-npm run serve
+    npm run serve
 
 ## Testing
+
 The application includes a set of unit and integration tests that can be run using Vitest:
+
   ```bash
-npx vitest
+    npx vitest
